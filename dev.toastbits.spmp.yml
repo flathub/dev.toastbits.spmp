@@ -113,12 +113,12 @@ modules:
       - type: file
         path: spmp.sh
       - type: archive
-        url: https://github.com/toasterofbread/spmp/releases/download/v0.4.0/spmp-v0.4.0-linux-x86_64.tar.gz
-        sha256: 1489923471cf10260e731a6bbadda09f1d3ae10b6d657d68100153e2cee25057
+        url: https://github.com/toasterofbread/spmp/releases/download/v0.4.1/spmp-v0.4.1-linux-x86_64.tar.gz
+        sha256: 0eeebaa74668e0e407edd003d83cf72b219ae23b380cd086f75ad88a6e761b94
       - type: file
-        url: https://raw.githubusercontent.com/toasterofbread/spmp/4fc51f93c6dd84264cbb76733c93deebc7de96d4/metadata/dev.toastbits.spmp.metainfo.xml
+        url: https://raw.githubusercontent.com/toasterofbread/spmp/ea9511c5fceee74859590c1036aada22c0e6ca6f/metadata/dev.toastbits.spmp.metainfo.xml
         dest-filename: dev.toastbits.spmp.metainfo.xml
-        sha256: 890d0b2dc7920cf4d7014f7e141b4443e99cb5395da27c22af14ec7c2dcc4cb9
+        sha256: 8daa33f00246493d28edaa8425ddf843b097e1fb9d405c221a57be7cbb092578
       - type: file
         url: https://raw.githubusercontent.com/toasterofbread/spmp/35d683bcbcef06b6622961c98464de610b5e5925/metadata/en-US/images/icon.png
         dest-filename: icon.png
