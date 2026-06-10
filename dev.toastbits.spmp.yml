@@ -1,12 +1,11 @@
 id: dev.toastbits.spmp
-command: spmp
-
 runtime: org.freedesktop.Platform
-runtime-version: '23.08'
+runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.openjdk
-
+command: spmp
+rename-icon: icon
 finish-args:
   # Network access
   - --share=network
@@ -31,6 +30,10 @@ finish-args:
 
   # App indicator
   - --talk-name=org.kde.StatusNotifierWatcher
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - '*.la'
 
 modules:
   - name: openjdk
@@ -39,9 +42,6 @@ modules:
       - /usr/lib/sdk/openjdk/install.sh
 
   - name: libass
-    cleanup:
-      - /include
-      - /lib/pkgconfig
     config-opts:
       - --disable-static
     sources:
@@ -54,14 +54,11 @@ modules:
     buildsystem: meson
     config-opts:
       - -Dauto_features=disabled
-    cleanup:
-      - /include
-      - /lib/pkgconfig
     sources:
       - type: git
         url: https://github.com/haasn/libplacebo.git
-        mirror-urls:
-          - https://code.videolan.org/videolan/libplacebo.git
+        # mirror-urls:
+        #   - https://code.videolan.org/videolan/libplacebo.git
         tag: v7.349.0
         commit: 1fd3c7bde7b943fe8985c893310b5269a09b46c5
 
@@ -83,9 +80,6 @@ modules:
       - -Djack=enabled
       - -Dpipewire=enabled
       - -Dpulse=enabled
-    cleanup:
-      - /include
-      - /lib/pkgconfig
     sources:
       - type: archive
         url: https://github.com/mpv-player/mpv/archive/refs/tags/v0.38.0.tar.gz
@@ -94,21 +88,13 @@ modules:
   - name: spmp
     buildsystem: simple
     build-commands:
-      - install -D icon.png /app/share/icons/hicolor/512x512/apps/dev.toastbits.spmp.png
-
-      - install -D dev.toastbits.spmp.metainfo.xml /app/share/metainfo/dev.toastbits.spmp.metainfo.xml
-
-      - |
-        desktop-file-edit \
-          --set-icon="dev.toastbits.spmp" \
-          --set-key="Exec" --set-value="spmp" \
-          dev.toastbits.spmp.desktop
-      - install -D dev.toastbits.spmp.desktop /app/share/applications/dev.toastbits.spmp.desktop
-
+      - install -D icon.png -t /app/share/icons/hicolor/512x512/apps/
+      - install -D ${FLATPAK_ID}.metainfo.xml -t /app/share/metainfo/
+      - desktop-file-edit --set-key=Exec --set-value=spmp ${FLATPAK_ID}.desktop
+      - install -D ${FLATPAK_ID}.desktop -t /app/share/applications/
       - install -Dm755 spmp.sh /app/bin/spmp
       - mkdir -p /app/dist
-      - mv ./* /app/dist
-    only-arches: [x86_64]
+      - mv ./{bin,lib} /app/dist
     sources:
       - type: file
         path: spmp.sh
@@ -117,13 +103,14 @@ modules:
         sha256: a131a520df8b5df92fc14a478ed12633e72925692105d318739b83eb107e7340
       - type: file
         url: https://raw.githubusercontent.com/toasterofbread/spmp/ea9511c5fceee74859590c1036aada22c0e6ca6f/metadata/dev.toastbits.spmp.metainfo.xml
-        dest-filename: dev.toastbits.spmp.metainfo.xml
         sha256: 8daa33f00246493d28edaa8425ddf843b097e1fb9d405c221a57be7cbb092578
       - type: file
         url: https://raw.githubusercontent.com/toasterofbread/spmp/35d683bcbcef06b6622961c98464de610b5e5925/metadata/en-US/images/icon.png
-        dest-filename: icon.png
         sha256: ee2d86557aed3fe180d793624302d8ef4d45dac404cb78b00d7e30bc544bdeb0
       - type: file
         url: https://raw.githubusercontent.com/toasterofbread/spmp/a3050bd03c5468b9ce5327de1b1561245634d98d/desktopApp/appimage/spmp.desktop
-        dest-filename: dev.toastbits.spmp.desktop
         sha256: 7a60baec1bb2b0c461032ffc7e2ec104d3f054938b0df7d620b23323a2ee8af6
+        dest-filename: dev.toastbits.spmp.desktop
+      - type: file
+        url: https://raw.githubusercontent.com/sayaka-sh/spmp/refs/heads/main/LICENSE
+        sha256: 3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986
